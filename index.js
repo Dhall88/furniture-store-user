@@ -27,14 +27,14 @@ app.get('/', function(req,res){
 
 app.get('/users', function(req,res){
 	console.log('get users');
-	Product.find({}).then(eachOne => {
+	User.find({}).then(eachOne => {
 		res.json(eachOne)
 	})
 })
 
 app.post('/users', function(req,res){
 	User.create({
-		user: req.body.user,
+		username: User.methods.generatHash(req.body.username),
 		password: req.body.password,
 		cart: req.body.cart
 	}).then(product => {

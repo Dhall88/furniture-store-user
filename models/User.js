@@ -1,20 +1,12 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require('bcryptjs');
 
-var user = new Schema({
-  username: String,
-  password: String,
-});
+var UserSchema = new mongoose.Schema({
+  username: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true},
+  email: {type: String, lowercase: true, unqiue: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true},
+  bio: String,
+  image: String,
+  hash: String,
+  salt: String
+}, {timestamps: true});
 
-// hash the password
-user.methods.generateHash = function(password) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-// checking if password is valid
-user.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.password);
-};
-var User = mongoose.model('user', user);
-module.exports = User;
+mongoose.model('User', UserSchema);
