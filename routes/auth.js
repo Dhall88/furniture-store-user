@@ -7,7 +7,7 @@ router.post("/register_login", (req, res, next) => {
         if(err) {
             return res.status(400).json({errors: err});
         }
-        if(user) {
+        if(!user) {
             return res.status(400).json({errors:"No user found"});
         }
         req.logIn(user, function(err) {
